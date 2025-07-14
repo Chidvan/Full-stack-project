@@ -1,29 +1,29 @@
-const express = require('express')
+const express = require('express');
+const {
+  createExpense,
+  getExpense,
+  getExpenses
+} = require('../controllers/expensesController')
+const router = express.Router();
 
-const router = express.Router()
 
-router.get('/',(req,res)=>{
-    res.json({mssg:"GET all expenses"})
+// GET all expenses
+router.get('/', getExpenses);
 
-})
+// GET a single expense
+router.get('/:id', getExpense);
 
-router.get('/:id',(req,res)=>{
-    res.json({mssg:"GET a Single expense"})
+// POST a new expense
+router.post('/', createExpense)
 
-})
+// DELETE an expense
+router.delete('/:id', (req, res) => {
+  res.json({ mssg: 'DELETE an expense' });
+});
 
-router.post('/',(req,res)=>{
-    res.json({mssg:"POST a new expenses"})
+// PATCH (update) an expense
+router.patch('/:id', (req, res) => {
+  res.json({ mssg: 'UPDATE the expense' });
+});
 
-})
-
-router.delete('/:id',(req,res)=>{
-    res.json({mssg:"DELETE a expense"})
-
-})
-
-router.patch('/:id',(req,res)=>{
-    res.json({mssg:"UPDATE the expenses"})
-
-})
-module.exports = router
+module.exports = router;
