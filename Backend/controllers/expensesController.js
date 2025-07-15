@@ -51,10 +51,38 @@ const getExpense = async (req,res) => {
     res.status(200).json(expense)
 }
 //delete an expense
+const deleteExpense= async(req,res) => {
+  const {id} = req.params
+
+  if(!mongoose.Types.ObjectId.isValid(id)){
+      return res.status(404).json({error:'No such workout'})
+    }
+  const expense= await Expense.findOneAndDelete({_id: id})
+  if (!expense){
+        return res.status(404).json({error:'No such expense'})
+    }
+  res.status(200).json(expense)
+}
 //update an expense
+const updateExpense= async(req,res) => {
+  const {id} = req.params
+
+  if(!mongoose.Types.ObjectId.isValid(id)){
+      return res.status(404).json({error:'No such workout'})
+    }
+  const expense= await Expense.findOneAndUpdate({_id: id},{
+    ...req.body
+  })
+  if (!expense){
+        return res.status(404).json({error:'No such expense'})
+    }
+  res.status(200).json(expense)
+}
 
  module.exports = {
     getExpense,
     getExpenses,
-    createExpense
+    createExpense,
+    deleteExpense,
+    updateExpense
  }

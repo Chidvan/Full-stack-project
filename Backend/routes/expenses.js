@@ -2,7 +2,9 @@ const express = require('express');
 const {
   createExpense,
   getExpense,
-  getExpenses
+  getExpenses,
+  deleteExpense,
+  updateExpense
 } = require('../controllers/expensesController')
 const router = express.Router();
 
@@ -17,13 +19,9 @@ router.get('/:id', getExpense);
 router.post('/', createExpense)
 
 // DELETE an expense
-router.delete('/:id', (req, res) => {
-  res.json({ mssg: 'DELETE an expense' });
-});
+router.delete('/:id', deleteExpense);
 
 // PATCH (update) an expense
-router.patch('/:id', (req, res) => {
-  res.json({ mssg: 'UPDATE the expense' });
-});
+router.patch('/:id',updateExpense);
 
 module.exports = router;
