@@ -1,4 +1,6 @@
-const Expense = require('../models/Expense1');
+const Expense = require('../models/Expense1')
+const mongoose = require('mongoose');
+
 
 //create a single expense
 const createExpense = async (req,res) => {
@@ -36,9 +38,13 @@ const getExpenses = async (req,res) => {
 const getExpense = async (req,res) => {
     const {id} = req.params
 
+    if(!mongoose.Types.ObjectId.isValid(id)){
+      return res.status(404).json({error:'No such workout'})
+    }
+
     const expense = await Expense.findById(id)
 
-    if (!workoout){
+    if (!expense){
         return res.status(404).json({error:'No such expense'})
     }
 
