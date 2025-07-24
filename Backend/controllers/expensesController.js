@@ -1,24 +1,21 @@
-const Expense = require('../models/Expense1')
+const Expense = require('../models/Expense1');
 const mongoose = require('mongoose');
 
-
-//create a single expense
-const createExpense = async (req,res) => {
-    const { description, amount, paidBy, group, splitBetween } = req.body;
+// CREATE a single expense
+const createExpense = async (req, res) => {
+  const { description, amount, paidBy } = req.body;
 
   try {
-    // validation (optional but recommended)
-    if (!description || !amount || !paidBy || !group || !splitBetween || splitBetween.length === 0) {
+    // Validation
+    if (!description || !amount || !paidBy) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // create the expense
+    // Create the expense
     const expense = await Expense.create({
       description,
       amount,
       paidBy,
-      group,
-      splitBetween,
     });
 
     res.status(201).json(expense);
@@ -26,63 +23,89 @@ const createExpense = async (req,res) => {
     console.error('Error creating expense:', error.message);
     res.status(500).json({ error: 'Failed to create expense' });
   }
-}
+};
 
-//get all expenses
-const getExpenses = async (req,res) => {
-    const expenses = await Expense.find({}).sort({ createdAt:-1})
+// GET all expenses
+const getExpenses = async (req, res) => {
+  try {
+    const expenses = await Expense.find({}).sort({ createdAt: -1 });
+    res.status(200).json(expenses);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch expenses' });
+  }
+};
 
-    res.status(200).json(expenses)
-}
-//get an expense
-const getExpense = async (req,res) => {
-    const {id} = req.params
+// GET a single expense by ID
+const getExpense = async (req, res) => {
+  const { id } = req.params;
 
-    if(!mongoose.Types.ObjectId.isValid(id)){
-      return res.status(404).json({error:'No such workout'})
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such expense' });
+  }
+
+  try {
+    const expense = await Expense.findById(id);
+
+    if (!expense) {
+      return res.status(404).json({ error: 'No such expense' });
     }
 
-    const expense = await Expense.findById(id)
+    res.status(200).json(expense);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch expense' });
+  }
+};
 
-    if (!expense){
-        return res.status(404).json({error:'No such expense'})
+// DELETE an expense by ID
+const deleteExpense = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such expense' });
+  }
+
+  try {
+    const expense = await Expense.findOneAndDelete({ _id: id });
+
+    if (!expense) {
+      return res.status(404).json({ error: 'No such expense' });
     }
 
-    res.status(200).json(expense)
-}
-//delete an expense
-const deleteExpense= async(req,res) => {
-  const {id} = req.params
+    res.status(200).json(expense);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete expense' });
+  }
+};
 
-  if(!mongoose.Types.ObjectId.isValid(id)){
-      return res.status(404).json({error:'No such workout'})
-    }
-  const expense= await Expense.findOneAndDelete({_id: id})
-  if (!expense){
-        return res.status(404).json({error:'No such expense'})
-    }
-  res.status(200).json(expense)
-}
-//update an expense
-const updateExpense= async(req,res) => {
-  const {id} = req.params
+// UPDATE an expense by ID
+const updateExpense = async (req, res) => {
+  const { id } = req.params;
 
-  if(!mongoose.Types.ObjectId.isValid(id)){
-      return res.status(404).json({error:'No such workout'})
-    }
-  const expense= await Expense.findOneAndUpdate({_id: id},{
-    ...req.body
-  })
-  if (!expense){
-        return res.status(404).json({error:'No such expense'})
-    }
-  res.status(200).json(expense)
-}
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such expense' });
+  }
 
- module.exports = {
-    getExpense,
-    getExpenses,
-    createExpense,
-    deleteExpense,
-    updateExpense
- }
+  try {
+    const expense = await Expense.findOneAndUpdate(
+      { _id: id },
+      { ...req.body },
+      { new: true } // Return the updated document
+    );
+
+    if (!expense) {
+      return res.status(404).json({ error: 'No such expense' });
+    }
+
+    res.status(200).json(expense);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update expense' });
+  }
+};
+
+module.exports = {
+  createExpense,
+  getExpenses,
+  getExpense,
+  deleteExpense,
+  updateExpense,
+};

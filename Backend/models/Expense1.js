@@ -8,17 +8,10 @@ const ExpenseSchema = new mongoose.Schema({
     type: Number, 
     required: true 
 },
-  paidBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  group: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' },
-  splitBetween: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  settled: { 
-    type: Boolean, 
-    default: false 
-},
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
-}
+  paidBy: { 
+    type: String, 
+    required: true 
+  }
 });
 
 module.exports = mongoose.model('Expense1', ExpenseSchema);
