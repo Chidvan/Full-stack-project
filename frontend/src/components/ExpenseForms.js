@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { ExpenseContext } from "../context/ExpensesContext";
+import { useExpenseContext } from "../hooks/useExpenseContext";
 
 const ExpenseForm = () => {
+  const {dispatch} = useExpenseContext()
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [paidBy, setPaidBy] = useState("");
@@ -39,6 +42,7 @@ const ExpenseForm = () => {
         setPaidBy("");
         setError(null);
         console.log("New expense added:", json);
+        dispatch({type:'CREATE_EXPENSE ',payload: json})
       }
     } catch (err) {
       setError("Network error");
