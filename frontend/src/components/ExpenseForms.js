@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ExpenseContext } from "../context/ExpensesContext";
+/*import { ExpenseContext } from "../context/ExpensesContext";*/
 import { useExpenseContext } from "../hooks/useExpenseContext";
 
 const ExpenseForm = () => {
@@ -8,6 +8,7 @@ const ExpenseForm = () => {
   const [amount, setAmount] = useState("");
   const [paidBy, setPaidBy] = useState("");
   const [error, setError] = useState(null);
+  const [emptyFields,setEmptyFields] = useState([])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,13 +37,15 @@ const ExpenseForm = () => {
 
       if (!response.ok) {
         setError(json.error || "Something went wrong");
+        setEmptyFields(json.emptyFields || []);
       } else {
         setDescription("");
         setAmount("");
         setPaidBy("");
         setError(null);
+        setEmptyFields([])
         console.log("New expense added:", json);
-        dispatch({type:'CREATE_EXPENSE ',payload: json})
+        dispatch({type:'CREATE_EXPENSE',payload: json})
       }
     } catch (err) {
       setError("Network error");
@@ -59,6 +62,7 @@ const ExpenseForm = () => {
         onChange={(e) => setDescription(e.target.value)}
         value={description}
         placeholder="e.g., Grocery"
+        className = {emptyFields.includes('description') ? 'error':''}
       />
 
       <label>Amount</label>
@@ -68,6 +72,7 @@ const ExpenseForm = () => {
         onChange={(e) => setAmount(e.target.value)}
         value={amount}
         placeholder="e.g., 150.00"
+        className = {emptyFields.includes('amount') ? 'error':''}
       />
 
       <label>Paid By</label>
@@ -76,6 +81,7 @@ const ExpenseForm = () => {
         onChange={(e) => setPaidBy(e.target.value)}
         value={paidBy}
         placeholder="e.g., John"
+        className = {emptyFields.includes('paidBy') ? 'error':''}
       />
 
       <button>Add Expense</button>

@@ -5,6 +5,21 @@ const mongoose = require('mongoose');
 const createExpense = async (req, res) => {
   const { description, amount, paidBy } = req.body;
 
+  let emptyFields = []
+
+  if (!description){
+    emptyFields.push('description')
+  }
+  if (!amount){
+    emptyFields.push('amount')
+  }
+  if (!paidBy){
+    emptyFields.push('paidBy')
+  }
+  if (emptyFields.length > 0){
+    return res.status(400).json({error:'Please fill in all the feilds',emptyFields})
+  }
+  
   try {
     // Validation
     if (!description || !amount || !paidBy) {
