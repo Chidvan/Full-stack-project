@@ -4,10 +4,13 @@ const {
   getExpense,
   getExpenses,
   deleteExpense,
-  updateExpense
+  updateExpense,
+  filterExpenses
 } = require('../controllers/expensesController')
 const router = express.Router();
 
+// GET expenses with filters
+router.get('/filter', filterExpenses);
 
 // GET all expenses
 router.get('/', getExpenses);

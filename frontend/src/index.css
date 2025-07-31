@@ -1,7 +1,7 @@
-/* google font */
+/* Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap');
 
-/* layout */
+/* Layout Variables */
 :root {
   --primary: #1aac83;
   --error: #e7195a;
@@ -25,6 +25,7 @@ header .container {
   align-items: center;
   justify-content: space-between;
 }
+
 header a {
   color: #333;
   text-decoration: none;
@@ -36,21 +37,112 @@ header a {
   margin: 0 auto;
 }
 
+/* Layout for the entire page */
 .home {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
+/* Wrapper for Expense Form and Budget Form */
+.form-budget-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* Expense Form takes more width */
+.form-section {
+  flex: 2;
+}
+
+/* Budget Form takes less */
+.budget-section {
+  flex: 1;
+}
+
+/* Filter Section */
+.filters {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.05);
+  width: 300px;
+  box-sizing: border-box;
+}
+
+.filters select,
+.filters input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: "Poppins";
+}
+
+/* Inputs and Labels */
+label, input, select {
+  display: block;
+  font-family: "Poppins";
+}
+
+input,
+select {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input.error,
+select.error {
+  border: 1px solid var(--error);
+}
+
+/* Buttons */
+form button {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px 15px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Error Message Box */
+div.error {
+  padding: 10px;
+  background: #fefefe;
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+/* Horizontal Expenses Layout */
+.expenses-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+/* Expense Card */
 .expense-details {
   background: #fff;
   border-radius: 4px;
-  margin: 20px auto;
   padding: 20px;
   position: relative;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  width: 250px;
+  min-height: 140px;
+  box-sizing: border-box;
 }
-
 
 .expense-details h4 {
   margin: 0 0 10px 0;
@@ -73,41 +165,4 @@ header a {
   padding: 6px;
   border-radius: 50%;
   color: #333;
-}
-/* expense form */
-label,input{
-  display:block;
-}
-
-input {
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-form button {
-    background: var(--primary);
-    border: 0;
-    color: #fff;
-    padding: 10px;
-    font-family: "Poppins";
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-div.error {
-    padding: 10px;
-    background: #fefefe;
-    border: 1px solid var(--error);
-    color: var(--error);
-    border-radius: 4px;
-    margin: 20px 0;
-}
-
-input.error{
-  border: 1px solid var(--error);
 }
